@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "react-datepicker": "^7.4.0"
+  }
+}
