@@ -210,7 +210,7 @@ const BranchesPage = () => {
                   pattern="\d{200}"
                   placeholder="Escribe tu texto aquí..."
                 ></textarea>
-                <label className="text-lg">
+                <label className="text-lg" htmlFor="branch-selection-control">
                   Selecciona las sucursales a las que deseas publicar este texto
                 </label>
                 <button
