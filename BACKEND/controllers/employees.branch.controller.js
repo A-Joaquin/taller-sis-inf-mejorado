@@ -110,29 +110,48 @@ export const getEmployeeById = async (req, res) => {
     }
 };
 
+// Función auxiliar para aplicar filtro de sucursal
+const applyBranchFilter = async (branchName) => {
+    if (!branchName) return null;
+    
+    const branch = await Branch.findOne({ nameBranch: branchName.toLowerCase() });
+    if (!branch) return false;
+    
+    return { _id: { $in: branch.employees } };
+};
+
+// Función auxiliar para aplicar filtro de salario
+const applySalaryFilter = (salaryMin, salaryMax) => {
+    if (!salaryMin && !salaryMax) return null;
+    
+    const salaryFilter = {};
+    if (salaryMin) salaryFilter.$gte = Number(salaryMin);
+    if (salaryMax) salaryFilter.$lte = Number(salaryMax);
+    
+    return { salary: salaryFilter };
+};
+
 // Obtener empleados con filtros
 export const getEmployeesWithFilters = async (req, res) => {
     const { branchName, contractStatus, role } = req.query;
     const salaryMin = req.query['salaryRange[min]'];
     const salaryMax = req.query['salaryRange[max]'];
     const today = new Date();
-
     const filterConditions = {};
-    // Filtro por sucursal
-    if (branchName) {
-        const branch = await Branch.findOne({ nameBranch: branchName.toLowerCase() });
-        if (branch) {
-            filterConditions._id = { $in: branch.employees }; // Filtra por IDs de empleados en esa sucursal
-        } else {
-            return res.status(404).json({ success: false, message: 'Sucursal no encontrada' });
-        }
+
+    // Aplicar filtro de sucursal
+    const branchFilter = await applyBranchFilter(branchName);
+    if (branchFilter === false) {
+        return res.status(404).json({ success: false, message: 'Sucursal no encontrada' });
+    }
+    if (branchFilter) {
+        Object.assign(filterConditions, branchFilter);
     }
 
-    // Filtro por salario
-    if (salaryMin || salaryMax) {
-        filterConditions.salary = {};
-        if (salaryMin) filterConditions.salary.$gte = Number(salaryMin);
-        if (salaryMax) filterConditions.salary.$lte = Number(salaryMax);
+    // Aplicar filtro de salario
+    const salaryFilter = applySalaryFilter(salaryMin, salaryMax);
+    if (salaryFilter) {
+        Object.assign(filterConditions, salaryFilter);
     }
 
     // Filtro por estado de contrato
