@@ -22,7 +22,7 @@ const CardDetailsPage = () => {
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700" htmlFor="branch-selection-control">
                 Fecha de Vencimiento
                 </label>
                 <input
