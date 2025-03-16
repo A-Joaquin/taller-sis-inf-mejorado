@@ -12,7 +12,7 @@ const CardDetailsPage = () => {
             </h3>
             <form className="flex flex-col space-y-4">
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700" htmlFor="branch-selection-control">
                 Número de Tarjeta
                 </label>
                 <input
