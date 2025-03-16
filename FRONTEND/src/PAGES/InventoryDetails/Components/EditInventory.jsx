@@ -24,37 +24,40 @@ const EditInventory = ({ inventory, onSave, onCancel }) => {
   });
 
   const handleAddMovement = (ingredientId) => {
+    // Crear una función separada para actualizar un ingrediente específico
+    const updateIngredient = (ingredient) => {
+      if (ingredient.ingredientId !== ingredientId) return ingredient;
+      
+      const quantity = parseFloat(ingredient.newMovement.quantity);
+      if (quantity === 0 || !ingredient.newMovement.reference) return ingredient;
+  
+      const newMovement = {
+        date: new Date(),
+        type: ingredient.newMovement.type,
+        ingredientId: ingredient.ingredientId,
+        ingredientName: ingredient.name,
+        quantity: ingredient.newMovement.type === 'loss' ? -Math.abs(quantity) : quantity,
+        unit: 'kg',
+        reference: ingredient.newMovement.reference
+      };
+  
+      const updatedMovements = [...(ingredient.movements || []), newMovement];
+      const totalMovements = updatedMovements.reduce((sum, mov) => sum + mov.quantity, 0);
+      
+      return {
+        ...ingredient,
+        movements: updatedMovements,
+        finalStock: ingredient.initialStock + totalMovements,
+        newMovement: { type: 'adjustment', quantity: 0, reference: '' }
+      };
+    };
+  
+    // Actualizar el estado usando la función separada
     setFormData(prev => ({
       ...prev,
-      ingredients: prev.ingredients.map(ing => {
-        if (ing.ingredientId === ingredientId) {
-          const quantity = parseFloat(ing.newMovement.quantity);
-          if (quantity === 0 || !ing.newMovement.reference) return ing;
-
-          const newMovement = {
-            date: new Date(),
-            type: ing.newMovement.type,
-            ingredientId: ing.ingredientId,
-            ingredientName: ing.name,
-            quantity: ing.newMovement.type === 'loss' ? -Math.abs(quantity) : quantity,
-            unit: 'kg',
-            reference: ing.newMovement.reference
-          };
-
-          // Calcular nuevo stock final
-          const totalMovements = [...(ing.movements || []), newMovement]
-            .reduce((sum, mov) => sum + mov.quantity, 0);
-          
-          return {
-            ...ing,
-            movements: [...(ing.movements || []), newMovement],
-            finalStock: ing.initialStock + totalMovements,
-            newMovement: { type: 'adjustment', quantity: 0, reference: '' }
-          };
-        }
-        return ing;
-      })
+      ingredients: prev.ingredients.map(updateIngredient)
     }));
+    
     setShowAddMovement(null);
   };
 
