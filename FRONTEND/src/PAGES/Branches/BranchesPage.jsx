@@ -62,48 +62,53 @@ const BranchesPage = () => {
   const handleTextChange = (e) => {
     setTextContent(e.target.value);
   };
-
+  
+  // Función auxiliar para verificar si los campos requeridos están completos
+  const isFormValid = () => {
+    if (selectedBranches.length === 0) return false;
+    
+    if (selectedOption === "image") {
+      return !!imageFile;
+    }
+    
+    if (selectedOption === "text") {
+      return textContent.trim().length > 0;
+    }
+    
+    return false;
+  };
+  
+  // Función auxiliar para procesar las sucursales seleccionadas
+  const getTargetBranches = () => {
+    return selectedBranches.length === branches.length ? ["all"] : selectedBranches;
+  };
+  
+  // Función auxiliar para resetear el formulario
+  const resetForm = () => {
+    setShowManageBranches(false);
+    setSelectedOption(null);
+    setSelectedBranches([]);
+    setImageFile(null);
+    setTextContent("");
+  };
+  
   const handleConfirm = async () => {
-    if (
-      (selectedOption === "image" &&
-        imageFile &&
-        selectedBranches.length > 0) ||
-      (selectedOption === "text" &&
-        textContent.trim().length > 0 &&
-        selectedBranches.length > 0)
-    ) {
-      try {
-        // Si seleccionó 'image' y hay una imagen
-        if (selectedOption === "image" && imageFile) {
-          await addImageToBranchesRequest(
-            imageFile,
-            selectedBranches.length === branches.length
-              ? ["all"]
-              : selectedBranches
-          );
-        }
-
-        // Si seleccionó 'text' y hay contenido de texto
-        if (selectedOption === "text" && textContent.trim().length > 0) {
-          await addTextToBranchesRequest(
-            textContent,
-            selectedBranches.length === branches.length
-              ? ["all"]
-              : selectedBranches
-          );
-        }
-
-        setShowManageBranches(false);
-        setSelectedOption(null);
-        setSelectedBranches([]);
-        setImageFile(null);
-        setTextContent("");
-
-        alert("Acción confirmada correctamente");
-      } catch (error) {
-        console.error("Error al procesar la acción:", error);
-        alert("Hubo un error al procesar la acción.");
+    if (!isFormValid()) return;
+    
+    try {
+      const targetBranches = getTargetBranches();
+      
+      if (selectedOption === "image") {
+        await addImageToBranchesRequest(imageFile, targetBranches);
+      } else {
+        await addTextToBranchesRequest(textContent, targetBranches);
       }
+      
+      resetForm();
+      alert("Acción confirmada correctamente");
+    } catch (error) {
+      console.error("Error al procesar la acción:", error);
+      alert("Hubo un error al procesar la acción.");
     }
   };
 
