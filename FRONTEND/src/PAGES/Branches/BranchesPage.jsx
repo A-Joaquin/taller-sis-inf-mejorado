@@ -165,7 +165,7 @@ const BranchesPage = () => {
                   className="block w-full mb-4 p-2"
                   onChange={handleImageChange}
                 />
-                <label className="text-lg">
+                <label className="text-lg" htmlFor="branch-selection-control">
                   Selecciona las sucursales a las que deseas publicar esta
                   imagen
                 </label>
