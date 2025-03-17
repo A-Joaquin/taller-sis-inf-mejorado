@@ -62,25 +62,26 @@ const EditInventory = ({ inventory, onSave, onCancel }) => {
   };
 
   const handleRemoveMovement = (ingredientId, movementIndex) => {
-    setFormData(prev => ({
-      ...prev,
-      ingredients: prev.ingredients.map(ing => {
-        if (ing.ingredientId === ingredientId) {
-          const updatedMovements = [...ing.movements];
-          updatedMovements.splice(movementIndex, 1);
-          
-          // Recalcular stock final
-          const totalMovements = updatedMovements.reduce((sum, mov) => sum + mov.quantity, 0);
-          
-          return {
-            ...ing,
-            movements: updatedMovements,
-            finalStock: ing.initialStock + totalMovements
-          };
-        }
-        return ing;
-      })
-    }));
+    setFormData(prev => {
+      const ingredientToUpdate = prev.ingredients.find(ing => ing.ingredientId === ingredientId);
+      if (!ingredientToUpdate) return prev; 
+      const updatedMovements = [...ingredientToUpdate.movements];
+      updatedMovements.splice(movementIndex, 1);
+      const totalMovements = updatedMovements.reduce((sum, mov) => sum + mov.quantity, 0);
+      const updatedIngredients = prev.ingredients.map(ing => 
+        ing.ingredientId === ingredientId 
+          ? {
+              ...ing,
+              movements: updatedMovements,
+              finalStock: ing.initialStock + totalMovements
+            }
+          : ing
+      );
+      return {
+        ...prev,
+        ingredients: updatedIngredients
+      };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -135,6 +136,39 @@ const EditInventory = ({ inventory, onSave, onCancel }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleNewMovementTypeChange = (ingredientId, value) => {
+    setFormData(prev => ({
+      ...prev,
+      ingredients: prev.ingredients.map(i => 
+        i.ingredientId === ingredientId 
+          ? {...i, newMovement: {...i.newMovement, type: value}}
+          : i
+      )
+    }));
+  };
+  
+  const handleNewMovementQuantityChange = (ingredientId, value) => {
+    setFormData(prev => ({
+      ...prev,
+      ingredients: prev.ingredients.map(i => 
+        i.ingredientId === ingredientId 
+          ? {...i, newMovement: {...i.newMovement, quantity: value}}
+          : i
+      )
+    }));
+  };
+  
+  const handleNewMovementReferenceChange = (ingredientId, value) => {
+    setFormData(prev => ({
+      ...prev,
+      ingredients: prev.ingredients.map(i => 
+        i.ingredientId === ingredientId 
+          ? {...i, newMovement: {...i.newMovement, reference: value}}
+          : i
+      )
+    }));
   };
 
   return (
@@ -224,14 +258,7 @@ const EditInventory = ({ inventory, onSave, onCancel }) => {
                         <div className="flex items-center gap-4">
                           <select
                             value={ing.newMovement.type}
-                            onChange={(e) => setFormData(prev => ({
-                              ...prev,
-                              ingredients: prev.ingredients.map(i => 
-                                i.ingredientId === ing.ingredientId 
-                                  ? {...i, newMovement: {...i.newMovement, type: e.target.value}}
-                                  : i
-                              )
-                            }))}
+                            onChange={(e) => handleNewMovementTypeChange(ing.ingredientId, e.target.value)}
                             className="rounded-md border-gray-300"
                           >
                             <option value="loss">Pérdida</option>
@@ -242,28 +269,14 @@ const EditInventory = ({ inventory, onSave, onCancel }) => {
                             step="0.01"
                             placeholder="Cantidad"
                             value={ing.newMovement.quantity}
-                            onChange={(e) => setFormData(prev => ({
-                              ...prev,
-                              ingredients: prev.ingredients.map(i => 
-                                i.ingredientId === ing.ingredientId 
-                                  ? {...i, newMovement: {...i.newMovement, quantity: e.target.value}}
-                                  : i
-                              )
-                            }))}
+                            onChange={(e) => handleNewMovementQuantityChange(ing.ingredientId, e.target.value)}
                             className="w-32 rounded-md border-gray-300"
                           />
                           <input
                             type="text"
                             placeholder="Referencia"
                             value={ing.newMovement.reference}
-                            onChange={(e) => setFormData(prev => ({
-                              ...prev,
-                              ingredients: prev.ingredients.map(i => 
-                                i.ingredientId === ing.ingredientId 
-                                  ? {...i, newMovement: {...i.newMovement, reference: e.target.value}}
-                                  : i
-                              )
-                            }))}
+                            onChange={(e) => handleNewMovementReferenceChange(ing.ingredientId, e.target.value)}
                             className="flex-1 rounded-md border-gray-300"
                           />
                           <button
