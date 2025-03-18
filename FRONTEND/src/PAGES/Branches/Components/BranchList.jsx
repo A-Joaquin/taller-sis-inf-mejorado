@@ -158,8 +158,9 @@ const BranchList = () => {
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Editar Sucursal</h3>
             <form onSubmit={handleEditBranch}>
               <div className="mb-4">
-                <label className="block text-gray-700">Nombre de la Sucursal</label>
+                <label htmlFor="nameBranch" className="block text-gray-700">Nombre de la Sucursal</label>
                 <input
+                  id="nameBranch"
                   type="text"
                   name="nameBranch"
                   value={editedBranch.nameBranch}
