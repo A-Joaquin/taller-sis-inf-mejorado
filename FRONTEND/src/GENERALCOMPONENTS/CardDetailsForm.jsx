@@ -8,39 +8,49 @@ const CardDetailsPage = () => {
         <div className="container mx-auto px-4 py-6">
         <div className="p-4 bg-white shadow-md rounded-lg">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            Información de la Tarjeta
+                Información de la Tarjeta
             </h3>
             <form className="flex flex-col space-y-4">
+                <div>
+                    <label 
+                        htmlFor="cardNumber"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        Número de Tarjeta
+                    </label>
+                    <input
+                        id="cardNumber"
+                        type="text"
+                        placeholder="1234 5678 9012 3456"
+                        className="mt-1 block w-full border rounded-md p-2"
+                    />
+                </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="branch-selection-control">
-                Número de Tarjeta
+                <label 
+                    htmlFor="expiryDate" 
+                    className="block text-sm font-medium text-gray-700"
+                >
+                    Fecha de Vencimiento
                 </label>
                 <input
-                type="text"
-                placeholder="1234 5678 9012 3456"
-                className="mt-1 block w-full border rounded-md p-2"
+                    id="expiryDate"
+                    type="text"
+                    placeholder="MM/AA"
+                    className="mt-1 block w-full border rounded-md p-2"
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="branch-selection-control">
-                Fecha de Vencimiento
+                <label 
+                    htmlFor="cvvCode" 
+                    className="block text-sm font-medium text-gray-700"
+                >
+                    CVV
                 </label>
                 <input
-                type="text"
-                placeholder="MM/AA"
-                className="mt-1 block w-full border rounded-md p-2"
-                />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="branch-selection-control">
-
-                CVV
-                
-                </label>
-                <input
-                type="password"
-                placeholder="123"
-                className="mt-1 block w-full border rounded-md p-2"
+                    id="cvvCode"
+                    type="password"
+                    placeholder="123"
+                    className="mt-1 block w-full border rounded-md p-2"
                 />
             </div>
             <button
