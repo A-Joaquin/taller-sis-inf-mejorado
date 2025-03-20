@@ -31,13 +31,13 @@ const SaleForm = () => {
   const [cart, setCart] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [discountMessage, setDiscountMessage] = useState("");
-
+  
   useEffect(() => {
     async function fetchProducts() {
       try {
-        await console.log(selectedBranch);
+        console.log(selectedBranch);
         const res = await getProductsByBranchRequest(selectedBranch);
-        await console.log("res", res.data.products);
+        console.log("res", res.data.products);
         setProducts(res.data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
