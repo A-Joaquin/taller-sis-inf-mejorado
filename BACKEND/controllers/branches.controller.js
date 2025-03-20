@@ -355,23 +355,23 @@ export const deleteTextFromBranch = async (req, res) => {
   console.log(req.params)
 
   console.log("text");
+try {
+  const branch = await Branch.findById(id); // Encuentra la sucursal por ID
+  console.log(branch); // Se eliminó el "await" porque console.log no es una promesa
 
-  try {
-    const branch = await Branch.findById(id);  // Encuentra la sucursal por ID
+  if (branch) return res.status(404).json({ message: "Sucursal no encontrada" });
 
-    await console.log(branch)
-    if (!branch) return res.status(404).json({ message: 'Sucursal no encontrada' });
+  // Filtra y elimina el texto con el ID proporcionado
+  const updatedTexts = branch.texts.filter((text) => text._id.toString() !== textId);
+  branch.texts = updatedTexts;
 
-    // Filtra y elimina el texto con el ID proporcionado
-    const updatedTexts = branch.texts.filter(text => text._id.toString() !== textId);
-    branch.texts = updatedTexts;
+  // Guarda los cambios en la base de datos
+  await branch.save();
 
-    // Guarda los cambios en la base de datos
-    await branch.save();
+  res.status(200).json({ success: true, message: "Texto eliminado con éxito" });
+} catch (error) {
+  console.error("Error:", error);
+  res.status(500).json({ success: false, message: "Error en el servidor", error });
+}
 
-    res.status(200).json({ message: 'Texto eliminado con éxito' });
-  } catch (error) {
-    console.error('Error al eliminar el texto:', error);
-    res.status(500).json({ message: 'Hubo un error al eliminar el texto', error });
-  }
 };
