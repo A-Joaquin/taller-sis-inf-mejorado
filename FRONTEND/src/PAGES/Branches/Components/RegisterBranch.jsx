@@ -55,8 +55,9 @@ const RegisterBranch = () => {
       </h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-700">Nombre de la Sucursal</label>
+          <label htmlFor="nameBranch" className="block text-gray-700">Nombre de la Sucursal</label>
           <input
+            id="nameBranch"
             type="text"
             name="nameBranch"
             value={formData.nameBranch}
@@ -67,8 +68,9 @@ const RegisterBranch = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Dirección</label>
+          <label htmlFor="addres" className="block text-gray-700">Dirección</label>
           <input
+            id="adress"
             type="text"
             name="address"
             value={formData.address}
@@ -79,8 +81,9 @@ const RegisterBranch = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Teléfono</label>
+          <label htmlFor="phone" className="block text-gray-700">Teléfono</label>
           <input
+            id="phone"
             type="number"
             name="phone"
             value={formData.phone}
