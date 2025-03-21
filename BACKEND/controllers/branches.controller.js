@@ -369,9 +369,10 @@ export const deleteTextFromBranch = async (req, res) => {
     // Guarda los cambios en la base de datos
     await branch.save();
 
-    res.status(200).json({ message: 'Texto eliminado con éxito' });
-  } catch (error) {
-    console.error('Error al eliminar el texto:', error);
-    res.status(500).json({ message: 'Hubo un error al eliminar el texto', error });
-  }
+  res.status(200).json({ success: true, message: "Texto eliminado con éxito" });
+} catch (error) {
+  console.error("Error:", error);
+  res.status(500).json({ success: false, message: "Error en el servidor", error });
+}
+
 };
