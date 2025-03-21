@@ -359,8 +359,8 @@ export const deleteTextFromBranch = async (req, res) => {
   try {
     const branch = await Branch.findById(id);  // Encuentra la sucursal por ID
 
-    await console.log(branch)
-    if (!branch) return res.status(404).json({ message: 'Sucursal no encontrada' });
+     console.log(branch)
+    if (branch) return res.status(404).json({ message: 'Sucursal no encontrada' });
 
     // Filtra y elimina el texto con el ID proporcionado
     const updatedTexts = branch.texts.filter(text => text._id.toString() !== textId);
