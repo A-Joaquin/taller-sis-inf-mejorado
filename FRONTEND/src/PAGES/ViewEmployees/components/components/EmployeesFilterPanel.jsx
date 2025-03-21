@@ -38,7 +38,7 @@ const EmployeesFilterPanel = ({ onFilterChange, activeFilters }) => {
 
       {isOpen && (
         <>
-          <div 
+          <button 
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={() => setIsOpen(false)}
           />
@@ -57,11 +57,12 @@ const EmployeesFilterPanel = ({ onFilterChange, activeFilters }) => {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-gray-700 font-medium mb-2">
+                <label htmlFor='min-salary' className="block text-gray-700 font-medium mb-2">
                   Rango de Salario (BS)
                 </label>
                 <div className="flex gap-2">
                   <input
+                    id="min-salary"
                     type="number"
                     value={filters.salaryRange.min}
                     onChange={(e) => handleFilterChange('salaryRange', { ...filters.salaryRange, min: e.target.value })}
@@ -69,6 +70,7 @@ const EmployeesFilterPanel = ({ onFilterChange, activeFilters }) => {
                     placeholder="Mínimo"
                   />
                   <input
+                    id="max-salary"
                     type="number"
                     value={filters.salaryRange.max}
                     onChange={(e) => handleFilterChange('salaryRange', { ...filters.salaryRange, max: e.target.value })}
@@ -79,10 +81,11 @@ const EmployeesFilterPanel = ({ onFilterChange, activeFilters }) => {
               </div>
 
               <div>
-                <label className="block text-gray-700 font-medium mb-2">
+                <label htmlFor="contract" className="block text-gray-700 font-medium mb-2">
                   Estado del Contrato
                 </label>
                 <select
+                  id="contract"
                   value={filters.contractStatus}
                   onChange={(e) => handleFilterChange('contractStatus', e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-red-500"
@@ -94,10 +97,11 @@ const EmployeesFilterPanel = ({ onFilterChange, activeFilters }) => {
               </div>
 
               <div>
-                <label className="block text-gray-700 font-medium mb-2">
+                <label htmlFor="role" className="block text-gray-700 font-medium mb-2">
                   Rol
                 </label>
                 <select
+                  id="role"
                   value={filters.role}
                   onChange={(e) => handleFilterChange('role', e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-red-500"

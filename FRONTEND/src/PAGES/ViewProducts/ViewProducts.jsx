@@ -122,7 +122,7 @@ const ViewProducts = () => {
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <div
+          <button
             key={product._id}
             onClick={() => navigate(`/product/${product._id}`)}
             className="flex flex-col border rounded-lg shadow hover:shadow-lg transition-shadow duration-300 cursor-pointer"
@@ -196,7 +196,7 @@ const ViewProducts = () => {
                 </button>
               )}
             </div>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -221,8 +221,9 @@ const ViewProducts = () => {
             <h2 className="text-2xl font-bold mb-4">Editar Producto</h2>
 
             {/* Campo para editar el nombre */}
-            <label className="block mb-2">Nombre:</label>
+            <label htmlFor='nameProduct' className="block mb-2">Nombre:</label>
             <input
+              id="nameProduct"
               type="text"
               name="nameProduct"
               value={editProduct.nameProduct}
@@ -236,8 +237,9 @@ const ViewProducts = () => {
             />
 
             {/* Campo para editar la imagen */}
-            <label className="block mb-2">Imagen:</label>
+            <label htmlFor="imagen" className="block mb-2">Imagen:</label>
             <input
+              id="imagen"
               type="file"
               accept="image/*"
               onChange={(e) =>
@@ -247,8 +249,9 @@ const ViewProducts = () => {
             />
 
             {/* Campo para editar el ID */}
-            <label className="block mb-2">ID:</label>
+            <label htmlFor='id' className="block mb-2">ID:</label>
             <input
+              id="id"
               type="text"
               name="id"
               value={editProduct.id}
@@ -262,8 +265,9 @@ const ViewProducts = () => {
             />
 
             {/* Campo para editar el precio */}
-            <label className="block mb-2">Precio:</label>
+            <label htmlFor="price" className="block mb-2">Precio:</label>
             <input
+              id="price"
               type="number"
               name="price"
               value={editProduct.price}
@@ -277,8 +281,9 @@ const ViewProducts = () => {
             />
 
             {/* Campo para editar la descripción */}
-            <label className="block mb-2">Descripción:</label>
+            <label htmlFor="description" className="block mb-2">Descripción:</label>
             <textarea
+              id="description"
               name="description"
               value={editProduct.description}
               onChange={(e) =>

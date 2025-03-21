@@ -170,8 +170,9 @@ const BranchList = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Dirección</label>
+                <label htmlFor="address" className="block text-gray-700">Dirección</label>
                 <input
+                  id="address"
                   type="text"
                   name="address"
                   value={editedBranch.address}
@@ -180,9 +181,11 @@ const BranchList = () => {
                   className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                 />
               </div>
+
               <div className="mb-4">
-                <label className="block text-gray-700">Teléfono</label>
+                <label htmlFor="phone" className="block text-gray-700">Teléfono</label>
                 <input
+                  id="phone"
                   type="number"
                   name="phone"
                   value={editedBranch.phone}

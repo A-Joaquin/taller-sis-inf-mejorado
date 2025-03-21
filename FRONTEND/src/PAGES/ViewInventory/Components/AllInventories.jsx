@@ -38,7 +38,7 @@ const AllInventories = ({ setError }) => {
   return (
     <div className="p-4 shadow-lg rounded-lg bg-white">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl"></h2>
+        <h2 className="text-2xl">Lista inventario</h2>
         <button onClick={handleRefresh} className="text-blue-500 hover:text-blue-700">
           <FaSync className="text-2xl" />
         </button>

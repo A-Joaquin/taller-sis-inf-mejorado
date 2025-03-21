@@ -195,13 +195,14 @@ const UserProfile = () => {
               >
                 {branches.length > 0 ? (
                   branches.map((branch) => (
-                    <div
+                    
+                    <button
                       key={branch._id || branch.nameBranch}
                       className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                       onClick={() => handleBranchChange(branch.nameBranch)}
                     >
                       {branch.nameBranch}
-                    </div>
+                    </button>
                   ))
                 ) : (
                   <p className="px-4 py-2 text-gray-500">No branches available</p>
@@ -212,15 +213,17 @@ const UserProfile = () => {
 
           {showRoleDropdown && (
             <div className="absolute bg-white border border-gray-300 rounded shadow-lg mt-1 z-10">
-              {roleList.map((role) => (
-                <div
-                  key={role}
+            {roleList.map((role) => (
+              <div key={role}>
+                <button
                   className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                   onClick={() => handleRoleChange(role)}
                 >
                   {role}
-                </div>
-              ))}
+                </button>
+              </div>
+            ))}
+
             </div>
           )}
         </div>
