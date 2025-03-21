@@ -171,9 +171,9 @@ const ProductDetails = () => {
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-2xl font-bold mb-4">Editar Producto</h2>
-
-            <label className="block mb-2">Imagen:</label>
+            <label htmlFor="productImage" className="block mb-2">Imagen:</label>
             <input
+              id="productImage"
               type="file"
               accept="image/*"
               onChange={(e) =>
@@ -182,8 +182,9 @@ const ProductDetails = () => {
               className="w-full p-2 mb-4 border border-gray-300 rounded"
             />
 
-            <label className="block mb-2">ID:</label>
+            <label htmlFor="productId" className="block mb-2">ID:</label>
             <input
+              id="productId"
               type="text"
               name="id"
               value={editProduct.id}
@@ -193,8 +194,9 @@ const ProductDetails = () => {
               className="w-full p-2 mb-4 border border-gray-300 rounded"
             />
 
-            <label className="block mb-2">Nombre:</label>
+            <label htmlFor="productName" className="block mb-2">Nombre:</label>
             <input
+              id="productName"
               type="text"
               name="nameProduct"
               value={editProduct.nameProduct}
@@ -205,8 +207,9 @@ const ProductDetails = () => {
               className="w-full p-2 mb-4 border border-gray-300 rounded"
             />
 
-            <label className="block mb-2">Precio:</label>
+            <label htmlFor="productPrice" className="block mb-2">Precio:</label>
             <input
+              id="productPrice"
               type="number"
               name="price"
               value={editProduct.price}
@@ -217,8 +220,9 @@ const ProductDetails = () => {
               className="w-full p-2 mb-4 border border-gray-300 rounded"
             />
 
-            <label className="block mb-2">Descripción:</label>
+            <label htmlFor="productDescription" className="block mb-2">Descripción:</label>
             <textarea
+              id="productDescription"
               name="description"
               value={editProduct.description}
               onChange={(e) =>
