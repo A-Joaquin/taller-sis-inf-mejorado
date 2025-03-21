@@ -146,10 +146,14 @@ const ProductRecipeForm = ({ product, onClose }) => {
             {/* Agregar nuevo ingrediente */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label 
+                  htmlFor="ingredientSelect" 
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Ingrediente
                 </label>
                 <select
+                  id="ingredientSelect"
                   value={selectedIngredient}
                   onChange={(e) => setSelectedIngredient(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
@@ -164,16 +168,20 @@ const ProductRecipeForm = ({ product, onClose }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Cantidad
+                <label 
+                    htmlFor="amountInput" 
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                    Cantidad
                 </label>
                 <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
+                    id="amountInput"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
                 />
               </div>
 
