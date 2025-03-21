@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBox, FaUsers, FaReceipt, FaBuilding, FaClipboardList, FaWarehouse, FaHome } from 'react-icons/fa';
-
+import PropTypes from 'prop-types';
 const NavBar = ({ closeNavBar, userRole }) => {
   const [ventasOpen, setVentasOpen] = useState(false);
   const [productosOpen, setProductosOpen] = useState(false);
@@ -229,6 +229,11 @@ const NavBar = ({ closeNavBar, userRole }) => {
       </ul>
     </nav>
   );
+};
+
+NavBar.propTypes = {
+  closeNavBar: PropTypes.func.isRequired,
+  userRole: PropTypes.string.isRequired,
 };
 
 export default NavBar;

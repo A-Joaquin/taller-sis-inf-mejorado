@@ -14,9 +14,6 @@ export const useAuth = () => {
   return context;
 };
 
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 
 // Componente que provee el contexto de autenticación
@@ -58,6 +55,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+  };
+  
 
   // Función para cerrar sesión
   const logOut = async () => {
