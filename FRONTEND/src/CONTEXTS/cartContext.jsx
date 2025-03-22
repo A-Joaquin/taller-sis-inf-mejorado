@@ -1,6 +1,8 @@
 // src/CONTEXTS/cartContext.jsx
 import { createContext, useState, useEffect, useContext } from 'react';
 
+import PropTypes from 'prop-types';
+
 export const CartContext = createContext();
 
 // Hook para acceder al contexto del carrito
@@ -35,7 +37,9 @@ export const CartProvider = ({ children }) => {
       {children}
     </CartContext.Provider>
   );
-  CartProvider.propTypes = {
-    children: PropTypes.node.isRequired, //  incluye cualquier elemento renderizable en React
-  };
+};
+
+//  Se movió fuera de la función para evitar "unreachable code"
+CartProvider.propTypes = {
+  children: PropTypes.node.isRequired, // Incluye cualquier elemento renderizable en React
 };
