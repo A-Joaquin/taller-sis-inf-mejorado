@@ -11,13 +11,12 @@ const Cart = () => {
   const [showQuestion, setShowQuestion] = useState(false);
   const [showAcceptMessage, setShowAcceptMessage] = useState(false);
   const [acceptMessageText, setAcceptMessageText] = useState("");
-
+  const userRole = user.role;
+  const [cartItems, setCartItems] = useState([]);
   if (!user) {
     return <div>Cargando...</div>;
   }
-
-  const userRole = user.role;
-  const [cartItems, setCartItems] = useState([]);
+  
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];

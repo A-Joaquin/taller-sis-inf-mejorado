@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 // Registrar un nuevo empleado en una sucursal
 export const registerEmployeeToBranch = async (req, res) => {
     const { branchName, name, ci, phone, email, password, contractStart, contractEnd, salary, role } = req.body;
-    const photo = req.file ? req.file.path : null;
+    //const photo = req.file ? req.file.path : null;
     
     if (!req.file) {
         console.error("Error: No se subió ninguna imagen.");
@@ -40,7 +40,7 @@ export const registerEmployeeToBranch = async (req, res) => {
             role,
             photo: req.file ? req.file.filename : null,
         });
-
+        
         const savedEmployee = await newEmployee.save();
         console.log(newEmployee);
         branch.employees.push(savedEmployee._id);
@@ -133,26 +133,43 @@ const applySalaryFilter = (salaryMin, salaryMax) => {
 
 // Obtener empleados con filtros
 export const getEmployeesWithFilters = async (req, res) => {
-    const { branchName, contractStatus, role } = req.query;
-    const salaryMin = req.query['salaryRange[min]'];
-    const salaryMax = req.query['salaryRange[max]'];
+    try {
+        const filterConditions = await buildFilterConditions(req.query);
+        const employees = await Employee.find(filterConditions);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Empleados obtenidos con filtros aplicados',
+            employees,
+        });
+    } catch (error) {
+        console.error("Error al obtener empleados con filtros:", error);
+        return res.status(error.statusCode || 500).json({
+            success: false,
+            message: error.message || 'Error interno del servidor',
+        });
+    }
+};
+
+// Función auxiliar para construir los filtros
+const buildFilterConditions = async (query) => {
+    const { branchName, contractStatus, role } = query;
+    const salaryMin = query['salaryRange[min]'];
+    const salaryMax = query['salaryRange[max]'];
     const today = new Date();
     const filterConditions = {};
 
     // Aplicar filtro de sucursal
     const branchFilter = await applyBranchFilter(branchName);
     if (branchFilter === false) {
-        return res.status(404).json({ success: false, message: 'Sucursal no encontrada' });
+        const error = new Error('Sucursal no encontrada');
+        error.statusCode = 404;
+        throw error;
     }
-    if (branchFilter) {
-        Object.assign(filterConditions, branchFilter);
-    }
+    Object.assign(filterConditions, branchFilter || {});
 
     // Aplicar filtro de salario
-    const salaryFilter = applySalaryFilter(salaryMin, salaryMax);
-    if (salaryFilter) {
-        Object.assign(filterConditions, salaryFilter);
-    }
+    Object.assign(filterConditions, applySalaryFilter(salaryMin, salaryMax) || {});
 
     // Filtro por estado de contrato
     if (contractStatus && contractStatus !== 'all') {
@@ -166,22 +183,9 @@ export const getEmployeesWithFilters = async (req, res) => {
         filterConditions.role = role;
     }
 
-    try {
-        const employees = await Employee.find(filterConditions);
-        res.status(200).json({
-            success: true,
-            message: 'Empleados obtenidos con filtros aplicados',
-            employees,
-        });
-    } catch (error) {
-        console.error("Error al obtener empleados con filtros:", error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al obtener empleados con filtros',
-            error: error.message,
-        });
-    }
+    return filterConditions;
 };
+
 
 // Controlador para editar un empleado en una sucursal
 export const editEmployeeInBranch = async (req, res) => {
