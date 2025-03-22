@@ -35,4 +35,7 @@ export const CartProvider = ({ children }) => {
       {children}
     </CartContext.Provider>
   );
+  CartProvider.propTypes = {
+    children: PropTypes.node.isRequired, //  incluye cualquier elemento renderizable en React
+  };
 };
