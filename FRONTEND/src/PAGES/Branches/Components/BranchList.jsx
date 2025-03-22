@@ -34,7 +34,7 @@ const BranchList = () => {
   const handleDelete = async (id) => {
     setIsDeleting(true);
     try {
-      const resp = await deleteBranchRequest(id);
+      await deleteBranchRequest(id);//Eliminamos la variable resp porque no se usa.
       setBranches(branches.filter(branch => branch._id !== id)); // Eliminar la sucursal de la lista
       setSuccessMessage('Sucursal eliminada exitosamente');
       setIsDeleting(false);
@@ -59,7 +59,7 @@ const BranchList = () => {
   const handleEditBranch = async (e) => {
     e.preventDefault();
     try {
-      const response = await editBranchRequest(selectedBranch._id, editedBranch);
+      await editBranchRequest(selectedBranch._id, editedBranch);//Eliminamos la variable response porque no se usa en ningún otro lugar.
       setBranches(branches.map((branch) => 
         branch._id === selectedBranch._id ? { ...branch, ...editedBranch } : branch
       ));
