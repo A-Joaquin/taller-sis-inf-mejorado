@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getInventoryByIdRequest } from '../../api/branch';
 import { useBranch } from '../../CONTEXTS/BranchContext';
 import InventoryActions from './Components/InventoryActions';
@@ -9,7 +9,6 @@ import PrintInventory from './Components/PrintInventory';
 
 const InventoryDetails = () => {
   const { id } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
   const { selectedBranch } = useBranch();
   const [inventory, setInventory] = useState(null);
@@ -31,9 +30,8 @@ const InventoryDetails = () => {
       try {
         setIsLoading(true);
         const response = await getInventoryByIdRequest(branchName, id);
-        if (response.data && response.data.inventory) {
-          setInventory(response.data.inventory);
-        } else {
+        if (response?.data.inventory) {
+          setInventory(response.data.inventory);} else {
           throw new Error('No se encontró el inventario');
         }
       } catch (error) {

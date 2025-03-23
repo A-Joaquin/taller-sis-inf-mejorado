@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { FaEye, FaEyeSlash, FaChevronDown } from "react-icons/fa";
 import { useBranch } from "../../../CONTEXTS/BranchContext";
-
+import PropTypes from 'prop-types';
 const EmployeeForm = ({ onFormChange }) => {
   const [form, setForm] = useState({
     branchName: "",
@@ -23,33 +23,11 @@ const EmployeeForm = ({ onFormChange }) => {
   const branchesRef = useRef(null);
   const { branches, selectedBranch, setSelectedBranch } = useBranch();
 
-  const validateForm = () => {
-    // Validación básica de campos requeridos
-    if (!form.name || !form.ci || !form.phone || !form.email || !form.password || 
-        !form.contractStart || !form.contractEnd || !form.salary || !form.role) {
-      setError("Por favor complete todos los campos requeridos");
-      return false;
-    }
 
-    // Validaciones básicas de formato
-    if (!/^\d+$/.test(form.phone)) {
-      setError("El teléfono solo debe contener números");
-      return false;
-    }
-
-    if (!/^\d+$/.test(form.ci)) {
-      setError("El CI solo debe contener números");
-      return false;
-    }
-
-    if (form.salary <= 0) {
-      setError("El salario debe ser mayor a 0");
-      return false;
-    }
-
-    setError("");
-    return true;
+  EmployeeForm.propTypes = {
+    onFormChange: PropTypes.func.isRequired,  // Cambiado de PropTypes.string a PropTypes.func
   };
+  
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -119,8 +97,9 @@ const EmployeeForm = ({ onFormChange }) => {
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         {/* Nombre */}
         <div>
-          <label className="block text-gray-700 font-medium">Nombre <span className="text-red-500">*</span></label>
+          <label htmlFor="name" className="block text-gray-700 font-medium">Nombre <span className="text-red-500">*</span></label>
           <input
+            id="name"
             type="text"
             name="name"
             value={form.name}
@@ -133,8 +112,9 @@ const EmployeeForm = ({ onFormChange }) => {
 
         {/* CI */}
         <div>
-          <label className="block text-gray-700 font-medium">CI <span className="text-red-500">*</span></label>
+          <label htmlFor="ci" className="block text-gray-700 font-medium">CI <span className="text-red-500">*</span></label>
           <input
+            id="ci"
             type="text"
             name="ci"
             value={form.ci}
@@ -147,8 +127,9 @@ const EmployeeForm = ({ onFormChange }) => {
 
         {/* Teléfono */}
         <div>
-          <label className="block text-gray-700 font-medium">Celular <span className="text-red-500">*</span></label>
+          <label htmlFor="phone" className="block text-gray-700 font-medium">Celular <span className="text-red-500">*</span></label>
           <input
+            id="phone"
             type="text"
             name="phone"
             value={form.phone}
@@ -162,8 +143,9 @@ const EmployeeForm = ({ onFormChange }) => {
 
         {/* Email */}
         <div>
-          <label className="block text-gray-700 font-medium">Email <span className="text-red-500">*</span></label>
+          <label htmlFor="email" className="block text-gray-700 font-medium">Email <span className="text-red-500">*</span></label>
           <input
+            id="email"
             type="email"
             name="email"
             value={form.email}
@@ -176,9 +158,10 @@ const EmployeeForm = ({ onFormChange }) => {
 
         {/* Password */}
         <div>
-          <label className="block text-gray-700 font-medium">Password <span className="text-red-500">*</span></label>
+          <label htmlFor="password" className="block text-gray-700 font-medium">Password <span className="text-red-500">*</span></label>
           <div className="relative">
             <input
+              id="password"
               type={showPassword ? "text" : "password"}
               name="password"
               value={form.password}
@@ -200,8 +183,9 @@ const EmployeeForm = ({ onFormChange }) => {
 
         {/* Sucursal */}
         <div className="relative" ref={branchesRef}>
-          <label className="block text-gray-700 font-medium">Sucursal <span className="text-red-500">*</span></label>
+          <label htmlFor="sucursal" className="block text-gray-700 font-medium">Sucursal <span className="text-red-500">*</span></label>
           <button
+            id="sucursal"
             type="button"
             onClick={() => setShowBranches(!showBranches)}
             className="w-full p-2 border border-gray-300 rounded mt-1 flex items-center justify-between"
@@ -213,7 +197,7 @@ const EmployeeForm = ({ onFormChange }) => {
             <div className="absolute w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-40 overflow-auto z-10">
               {branches.length > 0 ? (
                 branches.map((branch) => (
-                  <div
+                  <button
                     key={branch._id}
                     className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                     onClick={() => {
@@ -223,7 +207,7 @@ const EmployeeForm = ({ onFormChange }) => {
                     }}
                   >
                     {branch.nameBranch}
-                  </div>
+                  </button>
                 ))
               ) : (
                 <div className="px-4 py-2">No hay sucursales disponibles</div>
@@ -234,8 +218,9 @@ const EmployeeForm = ({ onFormChange }) => {
 
         {/* Fechas */}
         <div>
-          <label className="block text-gray-700 font-medium">Fecha de Inicio <span className="text-red-500">*</span></label>
+          <label htmlFor="contractStart" className="block text-gray-700 font-medium">Fecha de Inicio <span className="text-red-500">*</span></label>
           <input
+            id="contractStart"
             type="date"
             name="contractStart"
             value={form.contractStart}
@@ -246,8 +231,9 @@ const EmployeeForm = ({ onFormChange }) => {
         </div>
 
         <div>
-          <label className="block text-gray-700 font-medium">Fecha de Fin <span className="text-red-500">*</span></label>
+          <label htmlFor="contractEnd" className="block text-gray-700 font-medium">Fecha de Fin <span className="text-red-500">*</span></label>
           <input
+            id="contractEnd"
             type="date"
             name="contractEnd"
             value={form.contractEnd}
@@ -259,8 +245,9 @@ const EmployeeForm = ({ onFormChange }) => {
 
         {/* Salario */}
         <div>
-          <label className="block text-gray-700 font-medium">Salario <span className="text-red-500">*</span></label>
+          <label htmlFor="salary" className="block text-gray-700 font-medium">Salario <span className="text-red-500">*</span></label>
           <input
+            id="salary"
             type="number"
             name="salary"
             value={form.salary}
@@ -274,8 +261,9 @@ const EmployeeForm = ({ onFormChange }) => {
 
         {/* Rol */}
         <div>
-          <label className="block text-gray-700 font-medium">Rol <span className="text-red-500">*</span></label>
+          <label htmlFor="role" className="block text-gray-700 font-medium">Rol <span className="text-red-500">*</span></label>
           <select
+            id="role"
             name="role"
             value={form.role}
             onChange={handleChange}
@@ -291,8 +279,9 @@ const EmployeeForm = ({ onFormChange }) => {
 
         {/* Foto */}
         <div>
-          <label className="block text-gray-700 font-medium">Foto</label>
+          <label htmlFor="photo" className="block text-gray-700 font-medium">Foto</label>
           <input
+            id="photo"
             type="file"
             name="photo"
             accept="image/*"

@@ -1,7 +1,8 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext, useEffect,useMemo } from "react";
 import { loginRequest, logoutRequest, validateTokenRequest, refreshTokenRequest } from "../api/authentication";
 import Cookies from 'js-cookie';
 import { useCart } from "../CONTEXTS/cartContext";
+import PropTypes from "prop-types";
 
 // Creamos el contexto de autenticación
 export const AuthContext = createContext();
@@ -12,6 +13,11 @@ export const useAuth = () => {
   if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 };
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 
 // Componente que provee el contexto de autenticación
 export const AuthProvider = ({ children }) => {
@@ -28,7 +34,7 @@ export const AuthProvider = ({ children }) => {
       const res = await loginRequest(data, { withCredentials: true });
 
 
-      if (res && res.data) {
+      if (res?.data) {
         const { foundUser } = res.data;
 
 
@@ -51,6 +57,7 @@ export const AuthProvider = ({ children }) => {
       return { isError: true, error: e };
     }
   };
+
 
   // Función para cerrar sesión
   const logOut = async () => {
@@ -89,7 +96,7 @@ export const AuthProvider = ({ children }) => {
         // Intentamos validar el token existente
         const res = await validateTokenRequest();
 
-        if (res && res.data) {
+        if (res?.data) {
           const userData = {
             name: res.data.user.name,
             email: res.data.user.email,
@@ -104,7 +111,7 @@ export const AuthProvider = ({ children }) => {
         } else {
           const refreshRes = await refreshTokenRequest(refreshToken);
 
-          if (refreshRes && refreshRes.data) {
+          if (refreshRes?.data) {
             const { token: newToken, refreshToken: newRefreshToken } = refreshRes.data;
 
             // Guardamos los nuevos tokens en las cookies
@@ -147,15 +154,17 @@ export const AuthProvider = ({ children }) => {
     verifyJWT();
   }, []);
 
+  const contextValue = useMemo(() => ({
+    signIn,
+    logOut,
+    updateUser,
+    user,
+    isAuthenticated,
+    isLoading,
+  }), [signIn, logOut, updateUser, user, isAuthenticated, isLoading]);
+
   return (
-    <AuthContext.Provider value={{
-      signIn,
-      logOut,
-      updateUser,
-      user,
-      isAuthenticated,
-      isLoading,
-    }}>
+    <AuthContext.Provider value={contextValue}>
       {!isLoading ? children : <div>Loading...</div>} {/* Solo muestra los hijos si la carga se completó */}
     </AuthContext.Provider>
   );
