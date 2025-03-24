@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useBranch } from '../../../../CONTEXTS/BranchContext';
 import { getEmployeesWithFiltersRequest, editEmployeeRequest, deleteEmployeeRequest } from '../../../../api/branch';
 import QuestionMessage from "../../../../GENERALCOMPONENTS/QuestionMessage";
 import AcceptMessage from "../../../../GENERALCOMPONENTS/AcceptMessage";
+import PropTypes from 'prop-types';
 
 const ViewEmployeesForm = ({ activeFilters }) => {
   const [employees, setEmployees] = useState([]);
@@ -19,7 +19,6 @@ const ViewEmployeesForm = ({ activeFilters }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const navigate = useNavigate();
   const { selectedBranch } = useBranch();
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const ViewEmployeesForm = ({ activeFilters }) => {
 
         setEmployees(filteredEmployees);
       } catch (error) {
-        setErrorMessage("Error al cargar los empleados");
+        setErrorMessage("Error al cargar los empleados",error);
         setShowErrorMessage(true);
       }
     };
@@ -100,7 +99,7 @@ const ViewEmployeesForm = ({ activeFilters }) => {
       setSuccessMessage("Empleado actualizado exitosamente");
       setShowSuccessMessage(true);
     } catch (error) {
-      setErrorMessage("Error al actualizar el empleado");
+      setErrorMessage("Error al actualizar el empleado", error);
       setShowErrorMessage(true);
     }
   };
@@ -118,7 +117,7 @@ const ViewEmployeesForm = ({ activeFilters }) => {
       setSuccessMessage("Empleado eliminado exitosamente");
       setShowSuccessMessage(true);
     } catch (error) {
-      setErrorMessage("Error al eliminar el empleado");
+      setErrorMessage("Error al eliminar el empleado",error);
       setShowErrorMessage(true);
     }
   };
@@ -281,6 +280,15 @@ const ViewEmployeesForm = ({ activeFilters }) => {
       )}
     </div>
   );
+};
+
+ViewEmployeesForm.propTypes = {
+  activeFilters: PropTypes.shape({
+    salaryRange: PropTypes.shape({
+      min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      max: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    })
+  })
 };
 
 export default ViewEmployeesForm;
