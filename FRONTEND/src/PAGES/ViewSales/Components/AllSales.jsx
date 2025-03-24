@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
-import { FaSync } from 'react-icons/fa';
-import SearchSaleBar from './SearchBarSale';
-import SalesList from './SalesList';
+import PropTypes from 'prop-types';
 import LoadingMessage from '../../../GENERALCOMPONENTS/LoandingMessage';
 import { getSalesByBranchRequest } from '../../../api/branch';
 import { useBranch } from '../../../CONTEXTS/BranchContext';
+import { useState } from 'react';
 
 const TodaysSales = ({ setError, getAllSales, setViewSale }) => {
   const [sales, setSales] = useState([]);
@@ -66,6 +64,12 @@ const TodaysSales = ({ setError, getAllSales, setViewSale }) => {
       <SalesList sales={filteredSales} setViewSale={setViewSale} />
     </div>
   );
+};
+
+TodaysSales.propTypes = {
+  setError: PropTypes.func.isRequired,
+  getAllSales: PropTypes.func.isRequired,
+  setViewSale: PropTypes.func.isRequired
 };
 
 export default TodaysSales;
