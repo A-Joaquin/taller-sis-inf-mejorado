@@ -7,6 +7,7 @@ import {
 import { FaPlus, FaMinus, FaUtensils } from 'react-icons/fa';
 import QuestionMessage from "../../../GENERALCOMPONENTS/QuestionMessage.jsx";
 import AcceptMessage from "../../../GENERALCOMPONENTS/AcceptMessage.tsx";
+import PropTypes from 'prop-types';
 
 const ProductRecipeForm = ({ product, onClose }) => {
   const { selectedBranch } = useBranch();
@@ -271,6 +272,22 @@ const ProductRecipeForm = ({ product, onClose }) => {
       )}
     </div>
   );
+};
+
+ProductRecipeForm.propTypes = {
+  product: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    nameProduct: PropTypes.string.isRequired,
+    recipe: PropTypes.arrayOf(
+      PropTypes.shape({
+        ingredientId: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        amount: PropTypes.number.isRequired,
+        unit: PropTypes.string.isRequired,
+      })
+    ),
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default ProductRecipeForm;
