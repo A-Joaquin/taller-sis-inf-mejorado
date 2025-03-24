@@ -211,8 +211,9 @@ export const removeIngredientFromBranch = async (req, res) => {
 
 export const updateIngredientStock = async (req, res) => {
     try {
-        const { nameBranch, ingredientId, quantity, observations } = req.body;
+        const { nameBranch, ingredientId, quantity } = req.body;
 
+        // Verificar que los datos requeridos estén presentes
         if (!nameBranch || !ingredientId || !quantity) {
             return res.status(400).json({
                 success: false,

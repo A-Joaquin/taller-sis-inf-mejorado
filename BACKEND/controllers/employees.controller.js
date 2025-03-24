@@ -4,11 +4,13 @@ import bcrypt from 'bcrypt';
 // Registrar un nuevo empleado
 export const registerEmployee = async (req, res) => {
     const { name, ci, phone, email, password, contractStart, contractEnd, salary, role } = req.body;
-    const photo = req.file ? req.file.path : null; // Si se subió una foto, se almacena la ruta
+   
+    if (req.file) {
+        console.log('Archivo subido:', req.file); // Muestra detalles del archivo si fue subido correctamente
+    }
 
-    console.log('Archivo subido:', req.file); // Muestra detalles del archivo si fue subido correctamente
     console.log('Datos del cuerpo:', req.body);
-
+    
     // Encriptar la contraseña antes de guardarla
     const hashedPassword = await bcrypt.hash(password, 10);
 

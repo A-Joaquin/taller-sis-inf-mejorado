@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 // Registrar un nuevo empleado en una sucursal
 export const registerEmployeeToBranch = async (req, res) => {
     const { branchName, name, ci, phone, email, password, contractStart, contractEnd, salary, role } = req.body;
-    //const photo = req.file ? req.file.path : null;
+    
     
     if (!req.file) {
         console.error("Error: No se subió ninguna imagen.");
