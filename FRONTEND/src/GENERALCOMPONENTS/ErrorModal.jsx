@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+
 
 const ErrorModal = ({ error, setError }) => {
 
@@ -42,6 +44,18 @@ const ErrorModal = ({ error, setError }) => {
       </div>
     </div>
   );
+};
+
+ErrorModal.propTypes = {
+  error: PropTypes.shape({
+    response: PropTypes.shape({
+      data: PropTypes.shape({
+        message: PropTypes.string,
+        token: PropTypes.string,
+      }),
+    }),
+  }),
+  setError: PropTypes.func.isRequired,
 };
 
 export default ErrorModal;
