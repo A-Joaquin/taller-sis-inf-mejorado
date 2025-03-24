@@ -33,8 +33,9 @@ const SalesByHour = ({ setError, setViewSale }) => {
       <h2 className="text-xl mb-4">Seleccionar Rango de Horas</h2>
       <form onSubmit={handleFilter} className="flex space-x-4">
         <div>
-          <label>Hora de Inicio:</label>
+          <label htmlFor="startTimePicker">Hora de Inicio:</label>
           <DatePicker
+            id="startTimePicker"
             selected={startTime}
             onChange={(date) => setStartTime(date)}
             showTimeSelect
@@ -46,8 +47,9 @@ const SalesByHour = ({ setError, setViewSale }) => {
           />
         </div>
         <div>
-          <label>Hora de Fin:</label>
+          <label htmlFor="endTimePicker">Hora de Fin:</label>
           <DatePicker
+            id="endTimePicker"
             selected={endTime}
             onChange={(date) => setEndTime(date)}
             showTimeSelect

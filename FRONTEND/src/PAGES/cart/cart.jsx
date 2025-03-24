@@ -11,17 +11,20 @@ const Cart = () => {
   const [showQuestion, setShowQuestion] = useState(false);
   const [showAcceptMessage, setShowAcceptMessage] = useState(false);
   const [acceptMessageText, setAcceptMessageText] = useState("");
-  const userRole = user.role;
   const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      setCartItems(storedCart);
+    }
+  }, [user]);
+
   if (!user) {
     return <div>Cargando...</div>;
   }
   
-
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    setCartItems(storedCart);
-  }, []);
+  const userRole = user.role;
 
   const handleRemoveFromCart = (productId) => {
     const updatedCart = cartItems.filter((item) => item._id !== productId);
