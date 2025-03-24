@@ -7,6 +7,7 @@ import {
 import { FaPlus, FaMinus, FaUtensils } from 'react-icons/fa';
 import QuestionMessage from "../../../GENERALCOMPONENTS/QuestionMessage.jsx";
 import AcceptMessage from "../../../GENERALCOMPONENTS/AcceptMessage.tsx";
+import PropTypes from 'prop-types';
 
 const ProductRecipeForm = ({ product, onClose }) => {
   const { selectedBranch } = useBranch();
@@ -109,7 +110,7 @@ const ProductRecipeForm = ({ product, onClose }) => {
       setIsLoading(true);
       const response = await updateProductRecipeRequest(product._id, { recipe });
       
-      if (response.data && response.data.success) {
+      if (response?.data?.success) {
         setMessage('Receta actualizada exitosamente');
         setShowAccept(true);
         onClose();
@@ -146,14 +147,11 @@ const ProductRecipeForm = ({ product, onClose }) => {
             {/* Agregar nuevo ingrediente */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg">
               <div>
-                <label 
-                  htmlFor="ingredientSelect" 
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
+                <label htmlFor='ingredient' className="block text-sm font-medium text-gray-700 mb-1">
                   Ingrediente
                 </label>
                 <select
-                  id="ingredientSelect"
+                  id="ingredient"
                   value={selectedIngredient}
                   onChange={(e) => setSelectedIngredient(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
@@ -168,20 +166,17 @@ const ProductRecipeForm = ({ product, onClose }) => {
               </div>
 
               <div>
-                <label 
-                    htmlFor="amountInput" 
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                    Cantidad
+                <label htmlFor='cantidad' className="block text-sm font-medium text-gray-700 mb-1">
+                  Cantidad
                 </label>
                 <input
-                    id="amountInput"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
+                  id="cantidad"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
                 />
               </div>
 
@@ -279,6 +274,22 @@ const ProductRecipeForm = ({ product, onClose }) => {
       )}
     </div>
   );
+};
+
+ProductRecipeForm.propTypes = {
+  product: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    nameProduct: PropTypes.string.isRequired,
+    recipe: PropTypes.arrayOf(
+      PropTypes.shape({
+        ingredientId: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        amount: PropTypes.number.isRequired,
+        unit: PropTypes.string.isRequired,
+      })
+    ),
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default ProductRecipeForm;
