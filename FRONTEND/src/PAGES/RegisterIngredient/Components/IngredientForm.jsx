@@ -107,10 +107,11 @@ const IngredientForm = () => {
         ) : (
           <form onSubmit={handleSubmitClick} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label htmlFor="ingredientName" className="block text-sm font-medium text-gray-600 mb-1">
                 Nombre del Ingrediente
               </label>
               <input
+                id="ingredientName"
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
@@ -121,10 +122,11 @@ const IngredientForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label htmlFor="measurementUnit" className="block text-sm font-medium text-gray-600 mb-1">
                 Unidad de Medida
               </label>
               <select
+                id="measurementUnit"
                 value={form.unit}
                 onChange={(e) => setForm(prev => ({ ...prev, unit: e.target.value }))}
                 className="w-full p-2 border rounded-md focus:ring-red-500 focus:border-red-500"
@@ -138,10 +140,11 @@ const IngredientForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label htmlFor="currentStock" className="block text-sm font-medium text-gray-600 mb-1">
                 Stock Actual
               </label>
               <input
+                id="currentStock"
                 type="number"
                 min="0"
                 step="0.01"
