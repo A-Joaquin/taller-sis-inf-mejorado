@@ -172,10 +172,11 @@ const SaleForm = () => {
 
           <form className="flex flex-col space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label htmlFor="clientName" className="block text-sm font-medium text-gray-700">
                 Nombre del Cliente
               </label>
               <input
+                id="clientName"
                 type="text"
                 name="clientName"
                 value={form.clientName}
@@ -188,10 +189,11 @@ const SaleForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label htmlFor="clientCI" className="block text-sm font-medium text-gray-700">
                 CI del Cliente
               </label>
               <input
+                id="clientCI"
                 type="number"
                 name="clientCI"
                 value={form.clientCI}
@@ -202,10 +204,11 @@ const SaleForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label htmlFor="searchProduct" className="block text-sm font-medium text-gray-700">
                 Buscar Producto
               </label>
               <input
+                id="searchProduct"
                 type="text"
                 placeholder="Buscar por nombre o precio..."
                 value={searchTerm}
@@ -215,19 +218,23 @@ const SaleForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label id="productSelectionLabel" className="block text-sm font-medium text-gray-700">
                 Seleccionar Producto
               </label>
-              <div className="flex flex-wrap gap-2 py-2">
+              <div 
+                className="flex flex-wrap gap-2 py-2"
+                role="group" 
+                aria-labelledby="productSelectionLabel"
+              >
                 {filterProducts(products, searchTerm).map((product) => (
-                  <div
+                  <button
                     key={product._id}
                     className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-700 cursor-pointer text-sm"
                     onClick={() => handleAddToCart(product)}
                   >
                     <p>{product.nameProduct}</p>
                     <p>{product.price.toFixed(2)} Bs.</p>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
