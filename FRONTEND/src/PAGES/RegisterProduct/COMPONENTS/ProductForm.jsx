@@ -72,8 +72,11 @@ const ProductForm = () => {
       <form onSubmit={handleConfirmProduct} className="space-y-4">
 
         <div>
-          <label className="block text-gray-700 font-medium">Nombre del Producto <span className="text-red-500">*</span></label>
+          <label htmlFor="nameProduct" className="block text-gray-700 font-medium">
+            Nombre del Producto <span className="text-red-500">*</span>
+          </label>
           <input
+            id="nameProduct"
             type="text"
             name="nameProduct"
             value={form.nameProduct}
@@ -85,8 +88,9 @@ const ProductForm = () => {
         </div>
 
         <div>
-          <label className="block text-gray-700 font-medium">Precio <span className="text-red-500">*</span></label>
+          <label htmlFor="price" className="block text-gray-700 font-medium">Precio <span className="text-red-500">*</span></label>
           <input
+            id="price"
             type="number"
             name="price"
             value={form.price}
@@ -99,8 +103,9 @@ const ProductForm = () => {
         </div>
 
         <div>
-          <label className="block text-gray-700 font-medium">ID para el producto<span className="text-red-500">*</span></label>
+          <label htmlFor="productId" className="block text-gray-700 font-medium">ID para el producto<span className="text-red-500">*</span></label>
           <input
+            id="productId"
             type="text"
             name="id"
             value={form.id}
@@ -111,8 +116,9 @@ const ProductForm = () => {
         </div>
 
         <div>
-          <label className="block text-gray-700 font-medium">Descripción <span className="text-red-500">*</span></label>
+          <label htmlFor="description" className="block text-gray-700 font-medium">Descripción <span className="text-red-500">*</span></label>
           <textarea
+            id="description"
             name="description"
             value={form.description}
             onChange={handleChange}
@@ -124,8 +130,9 @@ const ProductForm = () => {
         </div>
 
         <div>
-          <label className="block text-gray-700 font-medium">Subir imagen <span className="text-red-500">*</span></label>
+          <label htmlFor="image" className="block text-gray-700 font-medium">Subir imagen <span className="text-red-500">*</span></label>
           <input
+            id="image"
             type="file"
             name="image"
             onChange={handleChange}
