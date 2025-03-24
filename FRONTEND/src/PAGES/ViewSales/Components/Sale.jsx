@@ -1,5 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';  // Asumiendo que estás usando date-fns para formatear fechas
+import PropTypes from 'prop-types';
 
 const Sale = ({ sale }) => {
   const { saleDate } = sale;  // Cambiado clientCI por ci
@@ -25,6 +26,21 @@ const Sale = ({ sale }) => {
       <span className="w-1/4 truncate">{formattedDate}</span>
     </div>
   );
+};
+
+Sale.propTypes = {
+  sale: PropTypes.shape({
+    saleDate: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]),
+    clientName: PropTypes.string,
+    clientCI: PropTypes.string,
+    totalAmount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ])
+  }).isRequired
 };
 
 export default Sale;
