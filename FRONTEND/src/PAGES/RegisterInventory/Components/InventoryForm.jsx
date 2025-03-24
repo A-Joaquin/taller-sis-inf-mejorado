@@ -135,9 +135,9 @@ const AutomatedInventoryForm = () => {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {employees.map((employee) => (
-                  <div
+                  <button
                     key={employee._id}
-                    className={`p-3 rounded-lg cursor-pointer transition-colors duration-200 ${
+                    className={`p-3 rounded-lg cursor-pointer transition-colors duration-200 text-left w-full ${
                       selectedEmployees.some(e => e.employeeCi === employee._id)
                         ? 'bg-red-500 text-white'
                         : 'bg-gray-100 hover:bg-gray-200'
@@ -146,7 +146,7 @@ const AutomatedInventoryForm = () => {
                   >
                     <p className="font-medium">{employee.name}</p>
                     <p className="text-sm">{employee.ci}</p>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
