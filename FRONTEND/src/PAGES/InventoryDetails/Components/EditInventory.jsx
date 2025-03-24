@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useBranch } from '../../../CONTEXTS/BranchContext';
 import { 
   updateBranchInventoryRequest,
   closeInventoryToBranchRequest
 } from '../../../api/branch';
 import { FaBox, FaSave, FaPlus, FaTrash } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 
 const EditInventory = ({ inventory, onSave, onCancel }) => {
   const { selectedBranch } = useBranch();
@@ -116,7 +117,7 @@ const EditInventory = ({ inventory, onSave, onCancel }) => {
       const updateResponse = await updateBranchInventoryRequest(inventory._id, updateData);
       
       // Luego cerramos el inventario
-      if (updateResponse.data && updateResponse.data.success) {
+      if (updateResponse?.data?.success) {
         await closeInventoryToBranchRequest({
           nameBranch: branchName,
           inventoryId: inventory._id
@@ -332,5 +333,41 @@ const EditInventory = ({ inventory, onSave, onCancel }) => {
     </form>
   );
 };
+
+
+
+EditInventory.propTypes = {
+  inventory: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    ingredients: PropTypes.arrayOf(
+      PropTypes.shape({
+        ingredientId: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        initialStock: PropTypes.number.isRequired,
+        finalStock: PropTypes.number,
+        movements: PropTypes.arrayOf(
+          PropTypes.shape({
+            date: PropTypes.instanceOf(Date),
+            type: PropTypes.string.isRequired,
+            ingredientId: PropTypes.string.isRequired,
+            ingredientName: PropTypes.string.isRequired,
+            quantity: PropTypes.number.isRequired,
+            unit: PropTypes.string.isRequired,
+            reference: PropTypes.string.isRequired
+          })
+        ),
+        newMovement: PropTypes.shape({
+          type: PropTypes.string.isRequired,
+          quantity: PropTypes.number.isRequired,
+          reference: PropTypes.string.isRequired
+        }).isRequired
+      })
+    ).isRequired,
+    observations: PropTypes.string
+  }).isRequired,
+  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired
+};
+
 
 export default EditInventory;

@@ -49,7 +49,7 @@ function Main() {
   if (isLoading) return <div>Cargando...</div>;
 
    const noMarginRoutes = ['/login', '/registro', '/pago/tarjeta', '/'];
-
+   const shouldShowHeader = !noMarginRoutes.includes(location.pathname);
   return (
     <>
       {/* Solo renderizamos el Header si la ruta no está en noMarginRoutes */}

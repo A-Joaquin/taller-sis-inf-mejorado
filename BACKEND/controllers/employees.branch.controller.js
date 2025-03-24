@@ -11,7 +11,7 @@ export const obtenerEmpleadosConFiltros = async (requisito, res) => {
     const salarioMin = requisito.consulta['rango salarial[mín]'];
     const salarioMaximo = requisito.consulta['rangosalario[máximo]'];
     const hoy = new Date();
-    const condicionesDeFiltro = {};
+    const condicionesDeFiltro = {}; 
   
     try {
       // Filtro por sucursal
@@ -59,6 +59,65 @@ export const obtenerEmpleadosConFiltros = async (requisito, res) => {
       });
     }
   };
+
+
+
+  // Registrar un nuevo empleado en una sucursal
+export const registerEmployeeToBranch = async (req, res) => {
+    const { branchName, name, ci, phone, email, password, contractStart, contractEnd, salary, role } = req.body;
+    const photo = req.file ? req.file.path : null;
+    
+    if (!req.file) {
+        console.error("Error: No se subió ninguna imagen.");
+    } else {
+        console.log("Imagen subida exitosamente:", req.file.filename);
+    }
+    
+    // Verificar que la contraseña no esté vacía
+    if (!password) {
+        return res.status(400).json({ success: false, message: 'La contraseña es obligatoria.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    try {
+        const branch = await Branch.findOne({ nameBranch: branchName.toLowerCase() });
+        if (!branch) {
+            return res.status(404).json({ success: false, message: 'Sucursal no encontrada' });
+        }
+
+        const newEmployee = new Employee({
+            name,
+            ci,
+            phone,
+            email,
+            password: hashedPassword,
+            contractStart,
+            contractEnd,
+            salary,
+            role,
+            photo: req.file ? req.file.filename : null,
+        });
+
+        const savedEmployee = await newEmployee.save();
+        console.log(newEmployee);
+        branch.employees.push(savedEmployee._id);
+        await branch.save();
+
+        res.status(200).json({
+            success: true,
+            message: `Empleado registrado exitosamente en la sucursal ${branch.nameBranch}`,
+            employee: savedEmployee,
+        });
+    } catch (error) {
+        console.error("Error al registrar empleado en la sucursal:", error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al registrar empleado en la sucursal',
+            error: error.message,
+        });
+    }
+};
   
 // Obtener empleados en una sucursal específica
 export const getEmployeesByBranch = async (req, res) => {
