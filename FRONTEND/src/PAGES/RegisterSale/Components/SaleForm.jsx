@@ -218,19 +218,20 @@ const SaleForm = () => {
             </div>
 
             <div>
-              <label id="productSelectionLabel" className="block text-sm font-medium text-gray-700">
+              <div id="productSelectionLabel" className="block text-sm font-medium text-gray-700">
                 Seleccionar Producto
-              </label>
-              <div 
+              </div>
+              <div
                 className="flex flex-wrap gap-2 py-2"
-                role="group" 
+                role="group"
                 aria-labelledby="productSelectionLabel"
               >
                 {filterProducts(products, searchTerm).map((product) => (
                   <button
                     key={product._id}
-                    className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-700 cursor-pointer text-sm"
+                    className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-700 cursor-pointer text-sm text-left w-full md:w-auto"
                     onClick={() => handleAddToCart(product)}
+                    aria-label={`Añadir ${product.name} al carrito`}
                   >
                     <p>{product.nameProduct}</p>
                     <p>{product.price.toFixed(2)} Bs.</p>
