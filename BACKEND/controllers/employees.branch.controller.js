@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 // Obtener empleados con filtros
 export const obtenerEmpleadosConFiltros = async (requisito, res) => {
     const { nombreDeLaRama, estadoDelContrato, role } = requisito.consulta;
-    const salarioMin = requisito.consulta['rango salarial[mín]'];
+    const salarioMin = requisito.consulta['rango salarial[min]'];
     const salarioMaximo = requisito.consulta['rangosalario[máximo]'];
     const hoy = new Date();
     const condicionesDeFiltro = {};
@@ -16,30 +16,19 @@ export const obtenerEmpleadosConFiltros = async (requisito, res) => {
     try {
       // Filtro por sucursal
       if (nombreDeLaRama) {
-        const rama = await Rama.findOne({ nombreRama: nombreDeLaRama.toLowerCase() });
-        if (rama) {
-          condicionesDeFiltro._id = { $in: rama.empleados }; // Filtra por IDs de empleados en esa sucursal
-        } else {
-          return res.status(404).json({ exito: false, mensaje: 'Sucursal no encontrada' });
-        }
+        const resultado = await aplicarFiltroSucursal(nombreDeLaRama, res);
+        if (!resultado.exito) return resultado.respuesta;
+        condicionesDeFiltro._id = resultado.condicion;
       }
   
       // Filtro por salario
-      if (salarioMin || salarioMaximo) {
-        condicionesDeFiltro.salario = {};
-        if (salarioMin) condicionesDeFiltro.salario.$gte = Number(salarioMin);
-        if (salarioMaximo) condicionesDeFiltro.salario.$lte = Number(salarioMaximo);
-      }
+      aplicarFiltroSalario(condicionesDeFiltro, salarioMin, salarioMaximo);
   
       // Filtro por estado de contrato
-      if (estadoDelContrato && estadoDelContrato !== 'todo') {
-        condicionesDeFiltro.contractEnd = estadoDelContrato === 'activo' ? { $gte: hoy } : { $lt: hoy };
-      }
+      aplicarFiltroContrato(condicionesDeFiltro, estadoDelContrato, hoy);
   
       // Filtro por rol
-      if (role && role !== 'todo') {
-        condicionesDeFiltro.rol = role;
-      }
+      aplicarFiltroRol(condicionesDeFiltro, role);
   
       // Obtener empleados con filtros
       const empleados = await Empleado.find(condicionesDeFiltro);
@@ -59,6 +48,40 @@ export const obtenerEmpleadosConFiltros = async (requisito, res) => {
       });
     }
   };
+
+async function aplicarFiltroSucursal(nombreRama, res) {
+    const rama = await Rama.findOne({ nombreRama: nombreRama.toLowerCase() });
+    if (!rama) {
+        return {
+        exito: false,
+        respuesta: res.status(404).json({ exito: false, mensaje: 'Sucursal no encontrada' })
+        };
+    }
+    return {
+        exito: true,
+        condicion: { $in: rama.empleados }
+    };
+}
+
+function aplicarFiltroSalario(condiciones, min, max) {
+    if (min || max) {
+      condiciones.salario = {};
+      if (min) condiciones.salario.$gte = Number(min);
+      if (max) condiciones.salario.$lte = Number(max);
+    }
+}
+  
+function aplicarFiltroContrato(condiciones, estado, fecha) {
+    if (estado && estado !== 'todo') {
+        condiciones.contractEnd = estado === 'activo' ? { $gte: fecha } : { $lt: fecha };
+    }
+}
+  
+function aplicarFiltroRol(condiciones, rol) {
+    if (rol && rol !== 'todo') {
+        condiciones.rol = rol;
+    }
+}
   
 // Obtener empleados en una sucursal específica
 export const getEmployeesByBranch = async (req, res) => {
