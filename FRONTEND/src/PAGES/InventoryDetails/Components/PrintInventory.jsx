@@ -3,6 +3,8 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import PropTypes from 'prop-types';
+
 
 const PrintInventory = ({ inventory, onClose }) => {
   const calculateMovementsByType = (movements) => {
@@ -139,6 +141,33 @@ const PrintInventory = ({ inventory, onClose }) => {
       </div>
     </div>
   );
+};
+
+PrintInventory.propTypes = {
+  inventory: PropTypes.shape({
+    date: PropTypes.string.isRequired,
+    status: PropTypes.oneOf(['open', 'closed']).isRequired,
+    employees: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired
+      })
+    ).isRequired,
+    ingredients: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        initialStock: PropTypes.number.isRequired,
+        finalStock: PropTypes.number.isRequired,
+        movements: PropTypes.arrayOf(
+          PropTypes.shape({
+            type: PropTypes.oneOf(['sale', 'purchase', 'adjustment']).isRequired,
+            quantity: PropTypes.number.isRequired
+          })
+        )
+      })
+    ).isRequired,
+    observations: PropTypes.string
+  }).isRequired,
+  onClose: PropTypes.func.isRequired
 };
 
 export default PrintInventory;
