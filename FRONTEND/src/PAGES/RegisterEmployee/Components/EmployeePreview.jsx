@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { registerEmployeeRequest } from "../../../api/employee";
 import { addEmployeeToBranchRequest } from "../../../api/branch";
-
+import PropTypes from "prop-types";
 const EmployeePreview = ({ form }) => {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -140,4 +140,20 @@ const EmployeePreview = ({ form }) => {
   );
 };
 
+
+EmployeePreview.propTypes = {
+  form: PropTypes.shape({
+    branchName: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    ci: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    contractStart: PropTypes.string.isRequired,
+    contractEnd: PropTypes.string.isRequired,
+    salary: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    role: PropTypes.string.isRequired,
+    photo: PropTypes.instanceOf(File),
+  }).isRequired,
+};
 export default EmployeePreview;
