@@ -2,7 +2,7 @@
 import { Ingredient } from '../models/ingredient.model.js';
 import { DailyInventory } from '../models/inventory.model.js';
 import Branch from '../models/branch.model.js';
-const crypto = require('crypto');
+
 
 export const registerIngredientToBranch = async (req, res) => {
     try {
