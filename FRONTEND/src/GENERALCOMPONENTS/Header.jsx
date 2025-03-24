@@ -52,11 +52,7 @@ const Header = () => {
   };
   const toggleBranchesMenu = () => setShowBranches(prevState => !prevState);
   const toggleUserMenu = () => setShowUserMenu(prevState => !prevState);
-  //const toggleBranchesMenu = () => setShowBranches(!showBranches);
-  //const toggleUserMenu = () => {
-    //console.log(showUserMenu);
-    //setShowUserMenu(!showUserMenu);
-  //}
+
 
   const closeNavBar = () => setShowNavBar(false);
 

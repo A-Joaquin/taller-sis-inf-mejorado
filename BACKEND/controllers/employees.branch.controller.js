@@ -5,62 +5,61 @@ import bcrypt from 'bcrypt';
 
 
 // Registrar un nuevo empleado en una sucursal
-export const registerEmployeeToBranch = async (req, res) => {
-    const { branchName, name, ci, phone, email, password, contractStart, contractEnd, salary, role } = req.body;
-    
-    
-    if (!req.file) {
-        console.error("Error: No se subió ninguna imagen.");
-    } else {
-        console.log("Imagen subida exitosamente:", req.file.filename);
-    }
-    
-    // Verificar que la contraseña no esté vacía
-    if (!password) {
-        return res.status(400).json({ success: false, message: 'La contraseña es obligatoria.' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
+// Obtener empleados con filtros
+export const obtenerEmpleadosConFiltros = async (requisito, res) => {
+    const { nombreDeLaRama, estadoDelContrato, role } = requisito.consulta;
+    const salarioMin = requisito.consulta['rango salarial[mín]'];
+    const salarioMaximo = requisito.consulta['rangosalario[máximo]'];
+    const hoy = new Date();
+    const condicionesDeFiltro = {};
+  
     try {
-        const branch = await Branch.findOne({ nameBranch: branchName.toLowerCase() });
-        if (!branch) {
-            return res.status(404).json({ success: false, message: 'Sucursal no encontrada' });
+      // Filtro por sucursal
+      if (nombreDeLaRama) {
+        const rama = await Rama.findOne({ nombreRama: nombreDeLaRama.toLowerCase() });
+        if (rama) {
+          condicionesDeFiltro._id = { $in: rama.empleados }; // Filtra por IDs de empleados en esa sucursal
+        } else {
+          return res.status(404).json({ exito: false, mensaje: 'Sucursal no encontrada' });
         }
-
-        const newEmployee = new Employee({
-            name,
-            ci,
-            phone,
-            email,
-            password: hashedPassword,
-            contractStart,
-            contractEnd,
-            salary,
-            role,
-            photo: req.file ? req.file.filename : null,
-        });
-        
-        const savedEmployee = await newEmployee.save();
-        console.log(newEmployee);
-        branch.employees.push(savedEmployee._id);
-        await branch.save();
-
-        res.status(200).json({
-            success: true,
-            message: `Empleado registrado exitosamente en la sucursal ${branch.nameBranch}`,
-            employee: savedEmployee,
-        });
+      }
+  
+      // Filtro por salario
+      if (salarioMin || salarioMaximo) {
+        condicionesDeFiltro.salario = {};
+        if (salarioMin) condicionesDeFiltro.salario.$gte = Number(salarioMin);
+        if (salarioMaximo) condicionesDeFiltro.salario.$lte = Number(salarioMaximo);
+      }
+  
+      // Filtro por estado de contrato
+      if (estadoDelContrato && estadoDelContrato !== 'todo') {
+        condicionesDeFiltro.contractEnd = estadoDelContrato === 'activo' ? { $gte: hoy } : { $lt: hoy };
+      }
+  
+      // Filtro por rol
+      if (role && role !== 'todo') {
+        condicionesDeFiltro.rol = role;
+      }
+  
+      // Obtener empleados con filtros
+      const empleados = await Empleado.find(condicionesDeFiltro);
+  
+      return res.status(200).json({
+        exito: true,
+        mensaje: 'Empleados obtenidos con filtros aplicados',
+        empleados,
+      });
+  
     } catch (error) {
-        console.error("Error al registrar empleado en la sucursal:", error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al registrar empleado en la sucursal',
-            error: error.message,
-        });
+      console.error('Error al obtener empleados con filtros:', error);
+      return res.status(500).json({
+        exito: false,
+        mensaje: 'Error al obtener empleados con filtros',
+        error: error.message,
+      });
     }
-};
-
+  };
+  
 // Obtener empleados en una sucursal específica
 export const getEmployeesByBranch = async (req, res) => {
     const { branchName } = req.params;

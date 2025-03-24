@@ -2,7 +2,7 @@ import React from 'react';
 import { format } from 'date-fns';  // Asumiendo que estás usando date-fns para formatear fechas
 
 const Sale = ({ sale }) => {
-  const { clientName, totalAmount, saleDate, ci } = sale;  // Cambiado clientCI por ci
+  const { saleDate } = sale;  // Cambiado clientCI por ci
 
   let formattedDate = 'Fecha no disponible';  // Valor por defecto para fechas inválidas
 
