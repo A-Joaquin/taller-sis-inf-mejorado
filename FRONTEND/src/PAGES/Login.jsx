@@ -85,12 +85,14 @@ const Login = () => {
                 setError(null);
               }}
             />
-            <div
-              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
               onClick={togglePasswordVisibility}
+              aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </div>
+            </button>
           </div>
           <button
             type="submit"

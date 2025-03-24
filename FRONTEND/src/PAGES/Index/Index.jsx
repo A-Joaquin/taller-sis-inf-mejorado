@@ -58,10 +58,14 @@ const Index = () => {
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                     {filteredProducts.map((product) => (
-                        <div
+                        <a
                             key={product._id}
-                            onClick={() => navigate(`/login`)}
-                            className="flex flex-col border rounded-lg shadow hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                            href="/login"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                navigate(`/login`);
+                            }}
+                            className="flex flex-col border rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
                         >
                             {product.image && (
                                 <img
@@ -76,7 +80,7 @@ const Index = () => {
                                 <p className="text-gray-600 text-sm md:text-base mb-1"><strong>Precio:</strong> {product.price} BS</p>
                                 <p className="text-gray-600 text-sm md:text-base"><strong>Descripción:</strong> {product.description}</p>
                             </div>
-                        </div>
+                        </a>
                     ))}
                 </div>
             </div>
