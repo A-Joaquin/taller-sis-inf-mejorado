@@ -44,19 +44,16 @@ function App() {
 
 function Main() {
   const location = useLocation();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isLoading } = useAuth(); // Eliminamos 'isAuthenticated' ya que no se usa
 
   if (isLoading) return <div>Cargando...</div>;
 
-  /*if (!isAuthenticated && location.pathname !== '/login') {
-    return <Navigate to="/login" />;
-  }*/
-
-  const noMarginRoutes = ['/login', '/registro', '/pago/tarjeta', '/'];
+   const noMarginRoutes = ['/login', '/registro', '/pago/tarjeta', '/'];
 
   return (
     <>
-      {location.pathname !== '/login' && location.pathname !== '/pago/tarjeta' && location.pathname !== '/' && location.pathname !== '/index' && <Header />}
+      {/* Solo renderizamos el Header si la ruta no está en noMarginRoutes */}
+      {shouldShowHeader && <Header />}
       <div className={noMarginRoutes.includes(location.pathname) ? "" : "mt-16"}>
         <Routes>
           <Route path="/" element={<Index />} />

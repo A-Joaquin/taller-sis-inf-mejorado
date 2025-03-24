@@ -2,5 +2,5 @@ projectKey=taller_de_sis_inf_mejorado
 serverUrl=http://localhost:9000
 serverVersion=10.6.0.92116
 dashboardUrl=http://localhost:9000/dashboard?id=taller_de_sis_inf_mejorado
-ceTaskId=020e21fa-f802-4465-b923-184b9365b2c6
-ceTaskUrl=http://localhost:9000/api/ce/task?id=020e21fa-f802-4465-b923-184b9365b2c6
+ceTaskId=4c31546d-efe0-44b3-a4a7-8887fd577425
+ceTaskUrl=http://localhost:9000/api/ce/task?id=4c31546d-efe0-44b3-a4a7-8887fd577425

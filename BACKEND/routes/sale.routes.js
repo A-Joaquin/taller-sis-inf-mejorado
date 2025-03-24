@@ -1,5 +1,5 @@
 import { Router } from 'express';
-//import verifyJwT from "../middlewares/verifyJwt.middleware.js";
+
 import { getSalesByDateDB, getSalesByHourDB, getSalesDB, getTodaySalesDB, registerSale } from '../controllers/sales.controller.js';
 
 const salesRouter = Router();
