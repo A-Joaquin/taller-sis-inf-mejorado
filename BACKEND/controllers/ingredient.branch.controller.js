@@ -2,6 +2,7 @@
 import { Ingredient } from '../models/ingredient.model.js';
 import { DailyInventory } from '../models/inventory.model.js';
 import Branch from '../models/branch.model.js';
+const crypto = require('crypto');
 
 export const registerIngredientToBranch = async (req, res) => {
     try {
@@ -210,6 +211,7 @@ export const removeIngredientFromBranch = async (req, res) => {
 };
 
 export const updateIngredientStock = async (req, res) => {
+    
     try {
         const { nameBranch, ingredientId, quantity } = req.body;
 
@@ -287,15 +289,17 @@ export const updateIngredientStock = async (req, res) => {
             });
         }
 
+        const crypto = require('crypto');
         const movement = {
-            type: quantity > 0 ? 'purchase' : 'adjustment',
-            ingredientId: ingredient._id,
-            ingredientName: ingredient.name,
-            quantity: quantity,
-            unit: ingredient.unit,
-            reference: `STK-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-            date: new Date()
+        type: quantity > 0 ? 'purchase' : 'adjustment',
+        ingredientId: ingredient._id,
+        ingredientName: ingredient.name,
+        quantity: quantity,
+        unit: ingredient.unit,
+        reference: `STK-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`, // Usando crypto.randomBytes para una referencia segura
+        date: new Date()
         };
+
 
         ingredientRecord.movements.push(movement);
         ingredientRecord.finalStock = ingredientRecord.initialStock + 

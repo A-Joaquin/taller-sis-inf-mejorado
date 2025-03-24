@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import crypto from 'crypto'; // Importar el módulo crypto
 
 const saleModel = new Schema({
     ticket: {
@@ -6,7 +7,7 @@ const saleModel = new Schema({
         required: true,
         unique: true,
         default: function() {
-            return `TK-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+            return `TK-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`; // Usar crypto.randomBytes para mayor seguridad
         }
     },    
     clientName: {

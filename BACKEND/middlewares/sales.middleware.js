@@ -128,7 +128,11 @@ export const processSaleIngredients = async function(req, res, next) {
         }
 
         // Generar número de ticket para referencia
-        const ticketNumber = `TK-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        const crypto = require('crypto');
+
+        // Generar número de ticket para referencia
+        const ticketNumber = `TK-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`; // Usando crypto.randomBytes para seguridad
+
 
         // Actualizar stock de ingredientes
         await updateIngredientsStock(ingredientUsage);
