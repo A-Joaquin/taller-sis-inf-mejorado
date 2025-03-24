@@ -50,12 +50,13 @@ const Header = () => {
   const toggleNavBar = () => {
     setShowNavBar(prevState => !prevState);
   };
-  
-  const toggleBranchesMenu = () => setShowBranches(!showBranches);
-  const toggleUserMenu = () => {
-    console.log(showUserMenu);
-    setShowUserMenu(!showUserMenu);
-  }
+  const toggleBranchesMenu = () => setShowBranches(prevState => !prevState);
+  const toggleUserMenu = () => setShowUserMenu(prevState => !prevState);
+  //const toggleBranchesMenu = () => setShowBranches(!showBranches);
+  //const toggleUserMenu = () => {
+    //console.log(showUserMenu);
+    //setShowUserMenu(!showUserMenu);
+  //}
 
   const closeNavBar = () => setShowNavBar(false);
 
@@ -115,12 +116,14 @@ const Header = () => {
                   {branches.length > 0 ? (
                     <ul className="max-h-48 overflow-y-auto custom-scrollbar">
                       {branches.map((branch) => (
-                        <li
-                          key={branch._id}
+                        <li key={branch._id} className="px-4 py-2">
+                          <button
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition-colors"
                           onClick={() => handleBranchSelect(branch)}
-                        >
+                          >
                           {branch.nameBranch}
+                          </button>
+                                                                      
                         </li>
                       ))}
                     </ul>
@@ -158,28 +161,23 @@ const Header = () => {
               {showUserMenu && (
                 <div className="absolute right-0 top-full mt-2 w-48 bg-white text-red-600 shadow-lg rounded-lg z-10">
                   <ul>
-                    {/*{userRole === "admin" && (
-                      <li
-                        className="px-4 py-2 hover:bg-red-100 cursor-pointer rounded-t-lg"
-                        onClick={handleOptionUserMenuSelect}
-                      >
-                        <Link to="/reports">Informes Financieros</Link>
-                      </li>
-                    )}*/}
+                   
                     <li
                       className="px-4 py-2 hover:bg-red-100 cursor-pointer rounded-t-lg"
                       onClick={handleOptionUserMenuSelect}
                     >
                       <Link to="/profile">Ver Usuario</Link>
                     </li>
-                    <li
-                      className="px-4 py-2 hover:bg-red-100 cursor-pointer rounded-b-lg"
-                      onClick={() => {
-                        handleOptionUserMenuSelect();
-                        setShowModal(true);
-                      }}
-                    >
-                      Cerrar Sesión
+                    <li className="px-4 py-2 rounded-b-lg">
+                      <button
+                        className="w-full text-left hover:bg-red-100 cursor-pointer px-4 py-2"
+                        onClick={() => {
+                          handleOptionUserMenuSelect();
+                          setShowModal(true);
+                        }}
+                      >
+                        Cerrar Sesión
+                      </button>
                     </li>
                   </ul>
                 </div>
