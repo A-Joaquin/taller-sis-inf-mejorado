@@ -224,8 +224,8 @@ const EditInventory = ({ inventory, onSave, onCancel }) => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="space-y-2">
-                        {ing.movements.map((mov, index) => (
-                          <div key={index} className="flex items-center justify-between text-sm">
+                        {ing.movements.map((mov) => (
+                          <div key={mov.id} className="flex items-center justify-between text-sm">
                             <span className={`${mov.quantity < 0 ? 'text-red-600' : 'text-green-600'}`}>
                               {mov.quantity} kg
                             </span>
@@ -233,7 +233,7 @@ const EditInventory = ({ inventory, onSave, onCancel }) => {
                             <span className="text-gray-600">{mov.reference}</span>
                             <button
                               type="button"
-                              onClick={() => handleRemoveMovement(ing.ingredientId, index)}
+                              onClick={() => handleRemoveMovement(ing.ingredientId, mov.id)}
                               className="ml-2 text-red-500 hover:text-red-700"
                             >
                               <FaTrash size={12} />
